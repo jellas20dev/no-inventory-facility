@@ -1,7 +1,6 @@
 package com.jellas.noinventoryfacility;
 
 import com.jellas.noinventoryfacility.network.PickupItemPayload;
-import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.AABB;
@@ -20,8 +19,7 @@ public class ItemDetectorSystem {
             return;
         }
 
-        Minecraft minecraft = Minecraft.getInstance();
-        Player player = minecraft.player;
+        Player player = PlayerStatus.getPlayer();
 
         if (player == null) {
             return;

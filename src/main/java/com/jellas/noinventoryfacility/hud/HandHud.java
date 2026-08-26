@@ -1,7 +1,7 @@
 package com.jellas.noinventoryfacility.hud;
 
 import com.jellas.noinventoryfacility.ItemClassificationSystem;
-import net.minecraft.client.Minecraft;
+import com.jellas.noinventoryfacility.PlayerStatus;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -77,7 +77,7 @@ public class HandHud {
         );
 
         graphics.itemDecorations(
-                Minecraft.getInstance().font,
+                PlayerStatus.getMinecraft().font,
                 stack,
                 x,
                 y
@@ -100,7 +100,7 @@ public class HandHud {
         );
 
         graphics.itemDecorations(
-                Minecraft.getInstance().font,
+                PlayerStatus.getMinecraft().font,
                 stack,
                 x,
                 y
@@ -124,7 +124,7 @@ public class HandHud {
         );
 
         graphics.itemDecorations(
-                Minecraft.getInstance().font,
+                PlayerStatus.getMinecraft().font,
                 stack,
                 x,
                 y

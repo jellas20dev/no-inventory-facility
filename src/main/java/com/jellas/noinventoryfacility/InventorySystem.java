@@ -1,6 +1,5 @@
 package com.jellas.noinventoryfacility;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.util.TriState;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -15,8 +14,7 @@ public class InventorySystem {
     @SubscribeEvent
     public static void onHotbarScroll(InputEvent.MouseScrollingEvent event) {
 
-        Minecraft minecraft = Minecraft.getInstance();
-        Player player = minecraft.player;
+        Player player = PlayerStatus.getPlayer();
 
         if (player == null) {
             return;
@@ -31,7 +29,8 @@ public class InventorySystem {
 
     @SubscribeEvent
     public static void onKeyInput(InputEvent.Key event) {
-        Player player = Minecraft.getInstance().player;
+
+        Player player = PlayerStatus.getPlayer();
 
         if (player == null) {
             return;

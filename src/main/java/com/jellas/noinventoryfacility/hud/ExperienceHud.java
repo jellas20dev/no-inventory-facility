@@ -1,6 +1,6 @@
 package com.jellas.noinventoryfacility.hud;
 
-import net.minecraft.client.Minecraft;
+import com.jellas.noinventoryfacility.PlayerStatus;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.resources.Identifier;
@@ -72,12 +72,12 @@ public class ExperienceHud {
                     );
 
             int textWidth =
-                    Minecraft.getInstance()
+                    PlayerStatus.getMinecraft()
                             .font
                             .width(level);
 
             graphics.text(
-                    Minecraft.getInstance().font,
+                    PlayerStatus.getMinecraft().font,
                     level,
                     (screenWidth - textWidth) / 2,
                     y + barHeight + 2,

@@ -1,6 +1,6 @@
 package com.jellas.noinventoryfacility.hud;
 
-import net.minecraft.client.Minecraft;
+import com.jellas.noinventoryfacility.PlayerStatus;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.Hud;
 import net.minecraft.client.renderer.RenderPipelines;
@@ -16,9 +16,11 @@ public class HealthHud {
             GuiGraphicsExtractor graphics,
             Player player
     ) {
-        Minecraft minecraft = Minecraft.getInstance();
 
-        int currentTick = minecraft.gui.hud.getGuiTicks();
+        int currentTick =
+                PlayerStatus.getMinecraft()
+                        .gui.hud
+                        .getGuiTicks();
 
         float health = player.getHealth();
         float maxHealth = player.getMaxHealth();

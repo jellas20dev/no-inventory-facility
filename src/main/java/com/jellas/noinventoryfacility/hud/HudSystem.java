@@ -1,6 +1,6 @@
 package com.jellas.noinventoryfacility.hud;
 
-import net.minecraft.client.Minecraft;
+import com.jellas.noinventoryfacility.PlayerStatus;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.world.entity.player.Player;
@@ -19,8 +19,7 @@ public class HudSystem {
             return;
         }
 
-        Minecraft minecraft = Minecraft.getInstance();
-        Player player = minecraft.player;
+        Player player = PlayerStatus.getPlayer();
 
         if (player == null) {
             return;
@@ -36,8 +35,7 @@ public class HudSystem {
     @SubscribeEvent
     public static void onRenderGuiLayer(RenderGuiLayerEvent.Pre event) {
 
-        Minecraft minecraft = Minecraft.getInstance();
-        Player player = minecraft.player;
+        Player player = PlayerStatus.getPlayer();
 
         if (player == null) {
             return;
