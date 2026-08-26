@@ -1,25 +1,86 @@
+# \# No Inventory Facility
 
-Installation information
-=======
+# 
 
-This template repository can be directly cloned to get you started with a new
-mod. Simply create a new repository cloned from this one, by following the
-instructions provided by [GitHub](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template).
+# No Inventory Facility (NIF) is a Minecraft mod built around a simple idea:
 
-Once you have your clone, simply open the repository in the IDE of your choice. The usual recommendation for an IDE is either IntelliJ IDEA or Eclipse.
+# 
 
-If at any point you are missing libraries in your IDE, or you've run into problems you can
-run `gradlew --refresh-dependencies` to refresh the local cache. `gradlew clean` to reset everything 
-{this does not affect your code} and then start the process again.
+# \*\*What if you didn't have an inventory at all?\*\*
 
-Mapping Names:
-============
-By default, the MDK is configured to use the official mapping names from Mojang for methods and fields 
-in the Minecraft codebase. These names are covered by a specific license. All modders should be aware of this
-license. For the latest license text, refer to the mapping file itself, or the reference copy here:
-https://github.com/NeoForged/NeoForm/blob/main/Mojang.md
+# 
 
-Additional Resources: 
-==========
-Community Documentation: https://docs.neoforged.net/  
-NeoForged Discord: https://discord.neoforged.net/
+# Instead of relying on the traditional inventory and hotbar, NIF introduces a physical two-hand item system.
+
+# 
+
+# \## Features
+
+# 
+
+# \- Custom two-hand item system
+
+# \- No traditional inventory
+
+# \- Custom item pickup
+
+# \- Server-side pickup validation
+
+# \- Two-handed item support
+
+# \- Custom HUD
+
+# \- Custom health, hunger and experience display
+
+# \- Main-hand and offhand item display
+
+# 
+
+# \## Current Status
+
+# 
+
+# \*\*0.1.0-beta\*\*
+
+# 
+
+# NIF is currently in early public beta. The core item-handling system and custom HUD are functional, but several mechanics and visual elements are still under development.
+
+# 
+
+# \## Known Issues
+
+# 
+
+# \- Some vanilla HUD animations are not yet reproduced.
+
+# \- Creative Mode HUD behavior is still being refined.
+
+# \- HUD visuals are experimental and may change significantly.
+
+# \- Some vanilla interactions are not yet fully supported.
+
+# 
+
+# \## License
+
+# 
+
+# No Inventory Facility is licensed under the Apache License 2.0.
+
+# 
+
+# See \[LICENSE](LICENSE) for the full license text.
+
+# 
+
+# \## Links
+
+# 
+
+# \- Modrinth: \[link]
+
+# \- CurseForge: \[link]
+
+# \- Ko-fi: \[link]
+
