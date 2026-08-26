@@ -1,13 +1,8 @@
 package com.jellas.noinventoryfacility.hud;
 
-import com.jellas.noinventoryfacility.ItemClassificationSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
-import net.minecraft.client.gui.Hud;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
-import net.minecraft.client.renderer.RenderPipelines;
-import net.minecraft.resources.Identifier;
-import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -27,14 +22,18 @@ public class HudSystem {
     @SubscribeEvent
     public static void onRenderGuiLayer(RenderGuiLayerEvent.Pre event) {
 
+        Minecraft minecraft = Minecraft.getInstance();
+        Player player = minecraft.player;
+
+        if (player == null) {
+            return;
+        }
+
         if (event.getName().equals(VanillaGuiLayers.HOTBAR)) {
 
             event.setCanceled(true);
 
-            Minecraft minecraft = Minecraft.getInstance();
-            Player player = minecraft.player;
-
-            if (player == null) {
+            if (player.isSpectator()) {
                 return;
             }
 
@@ -61,10 +60,7 @@ public class HudSystem {
 
             event.setCanceled(true);
 
-            Minecraft minecraft = Minecraft.getInstance();
-            Player player = minecraft.player;
-
-            if (player == null) {
+            if (player.isCreative() || player.isSpectator()) {
                 return;
             }
 
@@ -83,10 +79,7 @@ public class HudSystem {
 
             event.setCanceled(true);
 
-            Minecraft minecraft = Minecraft.getInstance();
-            Player player = minecraft.player;
-
-            if (player == null) {
+            if (player.isCreative() || player.isSpectator()) {
                 return;
             }
 
@@ -120,10 +113,7 @@ public class HudSystem {
 
             event.setCanceled(true);
 
-            Minecraft minecraft = Minecraft.getInstance();
-            Player player = minecraft.player;
-
-            if (player == null) {
+            if (player.isCreative() || player.isSpectator()) {
                 return;
             }
 
@@ -134,6 +124,8 @@ public class HudSystem {
                     graphics,
                     player
             );
+
+            return;
         }
     }
 }
