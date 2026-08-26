@@ -1,0 +1,13 @@
+{
+  "itemGroup.noinventoryfacility": "Example Mod Tab",
+  "block.noinventoryfacility.example_block": "Example Block",
+  "item.noinventoryfacility.example_item": "Example Item",
+
+  "noinventoryfacility.configuration.title": "No Inventory Facility Configs",
+  "noinventoryfacility.configuration.section.noinventoryfacility.common.toml": "No Inventory Facility Configs",
+  "noinventoryfacility.configuration.section.noinventoryfacility.common.toml.title": "No Inventory Facility Configs",
+  "noinventoryfacility.configuration.items": "Item List",
+  "noinventoryfacility.configuration.logDirtBlock": "Log Dirt Block",
+  "noinventoryfacility.configuration.magicNumberIntroduction": "Magic Number Text",
+  "noinventoryfacility.configuration.magicNumber": "Magic Number"
+}
