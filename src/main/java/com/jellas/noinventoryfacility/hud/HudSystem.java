@@ -1,5 +1,6 @@
 package com.jellas.noinventoryfacility.hud;
 
+import com.jellas.noinventoryfacility.InventorySystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
@@ -14,9 +15,23 @@ public class HudSystem {
 
     @SubscribeEvent
     public static void onScreenOpening(ScreenEvent.Opening event) {
-        if (event.getScreen() instanceof InventoryScreen) {
-            event.setCanceled(true);
+
+        if (!(event.getScreen() instanceof InventoryScreen)) {
+            return;
         }
+
+        Minecraft minecraft = Minecraft.getInstance();
+        Player player = minecraft.player;;
+
+        if (player == null) {
+            return;
+        }
+
+        if (player.isCreative()) {
+            return;
+        }
+
+        event.setCanceled(true);
     }
 
     @SubscribeEvent
@@ -30,6 +45,10 @@ public class HudSystem {
         }
 
         if (event.getName().equals(VanillaGuiLayers.HOTBAR)) {
+
+            if (player.isCreative()) {
+                return;
+            }
 
             event.setCanceled(true);
 

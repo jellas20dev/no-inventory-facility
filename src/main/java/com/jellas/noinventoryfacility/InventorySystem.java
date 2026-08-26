@@ -14,6 +14,18 @@ public class InventorySystem {
 
     @SubscribeEvent
     public static void onHotbarScroll(InputEvent.MouseScrollingEvent event) {
+
+        Minecraft minecraft = Minecraft.getInstance();
+        Player player = minecraft.player;
+
+        if (player == null) {
+            return;
+        }
+
+        if (player.isCreative()) {
+            return;
+        }
+
         event.setCanceled(true);
     }
 
@@ -22,6 +34,10 @@ public class InventorySystem {
         Player player = Minecraft.getInstance().player;
 
         if (player == null) {
+            return;
+        }
+
+        if (player.isCreative()) {
             return;
         }
 
