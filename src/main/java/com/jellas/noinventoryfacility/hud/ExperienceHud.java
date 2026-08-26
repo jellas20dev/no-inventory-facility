@@ -2,9 +2,21 @@ package com.jellas.noinventoryfacility.hud;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.renderer.RenderPipelines;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Player;
 
 public class ExperienceHud {
+
+    private static final Identifier EXPERIENCE_BAR_BACKGROUND =
+            Identifier.withDefaultNamespace(
+                    "hud/experience_bar_background"
+            );
+
+    private static final Identifier EXPERIENCE_BAR_PROGRESS =
+            Identifier.withDefaultNamespace(
+                    "hud/experience_bar_progress"
+            );
 
     public static void renderExperience(
             GuiGraphicsExtractor graphics,
@@ -21,28 +33,34 @@ public class ExperienceHud {
 
         int y = 10;
 
+        graphics.blitSprite(
+                RenderPipelines.GUI_TEXTURED,
+                EXPERIENCE_BAR_BACKGROUND,
+                x,
+                y,
+                barWidth,
+                barHeight
+        );
+
         int filledWidth =
                 (int) (
                         barWidth
                                 * player.experienceProgress
                 );
 
-        graphics.fill(
-                x,
-                y,
-                x + barWidth,
-                y + barHeight,
-                0xFF000000
-        );
-
         if (filledWidth > 0) {
 
-            graphics.fill(
+            graphics.blitSprite(
+                    RenderPipelines.GUI_TEXTURED,
+                    EXPERIENCE_BAR_PROGRESS,
+                    182,
+                    5,
+                    0,
+                    0,
                     x,
                     y,
-                    x + filledWidth,
-                    y + barHeight,
-                    0xFF80FF20
+                    filledWidth,
+                    barHeight
             );
         }
 
