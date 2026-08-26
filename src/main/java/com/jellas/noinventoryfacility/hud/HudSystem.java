@@ -1,5 +1,6 @@
-package com.jellas.noinventoryfacility;
+package com.jellas.noinventoryfacility.hud;
 
+import com.jellas.noinventoryfacility.ItemClassificationSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.Hud;

@@ -1,5 +1,6 @@
 package com.jellas.noinventoryfacility;
 
+import com.jellas.noinventoryfacility.hud.HudSystem;
 import com.jellas.noinventoryfacility.network.NetworkHandler;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.CreativeModeTab;
