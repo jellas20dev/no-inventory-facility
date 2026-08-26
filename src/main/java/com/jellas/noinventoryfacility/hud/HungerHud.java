@@ -57,7 +57,7 @@ public class HungerHud {
         for (int i = 0; i < 10; i++) {
 
             int x =
-                    screenWidth - 10 - ((9 - i) * 8) - 9;
+                    screenWidth - 10 - (9 * 8) - 9 + (i * 8);
 
             int y = 10;
 
@@ -71,7 +71,7 @@ public class HungerHud {
             );
 
             int foodForIcon =
-                    i * 2 + 1;
+                    (9 - i) * 2 + 1;
 
             if (foodForIcon < food) {
 

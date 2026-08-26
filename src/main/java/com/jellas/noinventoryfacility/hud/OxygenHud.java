@@ -40,11 +40,14 @@ public class OxygenHud {
         for (int i = 0; i < 10; i++) {
 
             int x =
-                    screenWidth - 10 - ((9 - i) * 8) - 9;
+                    screenWidth - 10 - (9 * 8) - 9 + (i * 8);
 
             int y = 20;
 
-            if (i < full) {
+            int oxygenForIcon =
+                    10 - i;
+
+            if (oxygenForIcon <= full) {
 
                 graphics.blitSprite(
                         RenderPipelines.GUI_TEXTURED,
@@ -55,7 +58,7 @@ public class OxygenHud {
                         9
                 );
 
-            } else if (i < full + partial) {
+            } else if (oxygenForIcon == full + 1 && partial > 0) {
 
                 graphics.blitSprite(
                         RenderPipelines.GUI_TEXTURED,
