@@ -18,21 +18,21 @@
 
 # 
 
-# \- Custom two-hand item system
+ \- Custom two-hand item system
 
-# \- No traditional inventory
+ \- No traditional inventory
 
-# \- Custom item pickup
+ \- Custom item pickup
 
-# \- Server-side pickup validation
+ \- Server-side pickup validation
 
-# \- Two-handed item support
+ \- Two-handed item support
 
-# \- Custom HUD
+ \- Custom HUD
 
-# \- Custom health, hunger and experience display
+ \- Custom health, hunger and experience display
 
-# \- Main-hand and offhand item display
+ \- Main-hand and offhand item display
 
 # 
 
