@@ -1,5 +1,6 @@
 package com.jellas.noinventoryfacility.hud;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.Hud;
 import net.minecraft.client.renderer.RenderPipelines;
@@ -8,15 +9,37 @@ import net.minecraft.world.entity.player.Player;
 
 public class HealthHud {
 
+    private static float lastHealth = -1.0f;
+    private static int healthBlinkTime = 0;
+
     public static void renderHealth(
             GuiGraphicsExtractor graphics,
             Player player
     ) {
+        Minecraft minecraft = Minecraft.getInstance();
+
+        int currentTick = minecraft.gui.hud.getGuiTicks();
+
         float health = player.getHealth();
         float maxHealth = player.getMaxHealth();
 
+        if (lastHealth < 0.0f) {
+            lastHealth = health;
+        }
+
+        if (health < lastHealth) {
+            healthBlinkTime =
+                    currentTick + 20;
+        }
+
+        boolean isBlink =
+                healthBlinkTime > currentTick
+                         && (healthBlinkTime - currentTick) / 3L % 2L == 1L;
+
+        lastHealth = health;
+
         int totalHearts =
-                (int) Math.ceil(maxHealth / 2.0F);
+                (int) Math.ceil(maxHealth / 2.0f);
 
         for (int i = 0; i < totalHearts; i++) {
 
@@ -27,7 +50,7 @@ public class HealthHud {
                     Hud.HeartType.CONTAINER.getSprite(
                             false,
                             false,
-                            false
+                            isBlink
                     );
 
             graphics.blitSprite(
@@ -40,15 +63,15 @@ public class HealthHud {
             );
 
             float heartHealth =
-                    health - (i * 2.0F);
+                    health - (i * 2.0f);
 
-            if (heartHealth >= 2.0F) {
+            if (heartHealth >= 2.0f) {
 
                 Identifier full =
                         Hud.HeartType.NORMAL.getSprite(
                                 false,
                                 false,
-                                false
+                                isBlink
                         );
 
                 graphics.blitSprite(
@@ -66,7 +89,7 @@ public class HealthHud {
                         Hud.HeartType.NORMAL.getSprite(
                                 false,
                                 true,
-                                false
+                                isBlink
                         );
 
                 graphics.blitSprite(
