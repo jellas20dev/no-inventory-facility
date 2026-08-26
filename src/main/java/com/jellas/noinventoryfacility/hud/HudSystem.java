@@ -1,6 +1,5 @@
 package com.jellas.noinventoryfacility.hud;
 
-import com.jellas.noinventoryfacility.InventorySystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
@@ -21,7 +20,7 @@ public class HudSystem {
         }
 
         Minecraft minecraft = Minecraft.getInstance();
-        Player player = minecraft.player;;
+        Player player = minecraft.player;
 
         if (player == null) {
             return;
@@ -106,6 +105,21 @@ public class HudSystem {
                     event.getGuiGraphics();
 
             HungerHud.renderHunger(
+                    graphics,
+                    player
+            );
+
+            return;
+        }
+
+        if (event.getName().equals(VanillaGuiLayers.AIR_LEVEL)) {
+
+            event.setCanceled(true);
+
+            GuiGraphicsExtractor graphics =
+                    event.getGuiGraphics();
+
+            OxygenHud.renderOxygen(
                     graphics,
                     player
             );
