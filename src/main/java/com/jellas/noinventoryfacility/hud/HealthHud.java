@@ -36,9 +36,12 @@ public class HealthHud {
 
         boolean isBlink =
                 healthBlinkTime > currentTick
-                         && (healthBlinkTime - currentTick) / 3L % 2L == 1L;
+                        && (healthBlinkTime - currentTick) / 3L % 2L == 1L;
 
         lastHealth = health;
+
+        Hud.HeartType heartType =
+                PlayerStatus.getHeartType();
 
         int totalHearts =
                 (int) Math.ceil(maxHealth / 2.0f);
@@ -70,7 +73,7 @@ public class HealthHud {
             if (heartHealth >= 2.0f) {
 
                 Identifier full =
-                        Hud.HeartType.NORMAL.getSprite(
+                        heartType.getSprite(
                                 false,
                                 false,
                                 isBlink
@@ -88,7 +91,7 @@ public class HealthHud {
             } else if (heartHealth > 0.0F) {
 
                 Identifier half =
-                        Hud.HeartType.NORMAL.getSprite(
+                        heartType.getSprite(
                                 false,
                                 true,
                                 isBlink
