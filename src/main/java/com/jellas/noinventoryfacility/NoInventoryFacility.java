@@ -32,7 +32,16 @@ public class NoInventoryFacility {
         modEventBus.register(NetworkHandler.class);
 
         InventorySystem.init();
+
         NeoForge.EVENT_BUS.register(InventorySystem.class);
         NeoForge.EVENT_BUS.register(HudSystem.class);
+
+        modEventBus.addListener(
+                OffHandDrop::register
+        );
+
+        NeoForge.EVENT_BUS.addListener(
+                OffHandDrop::tick
+        );
     }
 }
