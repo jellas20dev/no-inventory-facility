@@ -52,6 +52,16 @@ public class PlayerStatus {
 
         return Hud.HeartType.NORMAL;
     }
+
+    public static float getAbsorption() {
+        Player player = getPlayer();
+
+        if (player == null) {
+            return 0.0f;
+        }
+
+        return player.getAbsorptionAmount();
+    }
     public static boolean isHardcore() {
 
         return getMinecraft().level != null

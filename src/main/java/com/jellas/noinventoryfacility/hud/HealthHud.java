@@ -24,6 +24,11 @@ public class HealthHud {
 
         float health = player.getHealth();
         float maxHealth = player.getMaxHealth();
+        float absorption =
+                PlayerStatus.getAbsorption();
+
+        boolean isHardcore =
+                PlayerStatus.isHardcore();
 
         if (lastHealth < 0.0f) {
             lastHealth = health;
@@ -53,7 +58,7 @@ public class HealthHud {
 
             Identifier container =
                     Hud.HeartType.CONTAINER.getSprite(
-                            false,
+                            isHardcore,
                             false,
                             isBlink
                     );
@@ -74,7 +79,7 @@ public class HealthHud {
 
                 Identifier full =
                         heartType.getSprite(
-                                PlayerStatus.isHardcore(),
+                                isHardcore,
                                 false,
                                 isBlink
                         );
@@ -92,7 +97,72 @@ public class HealthHud {
 
                 Identifier half =
                         heartType.getSprite(
+                                isHardcore,
+                                true,
+                                isBlink
+                        );
+
+                graphics.blitSprite(
+                        RenderPipelines.GUI_TEXTURED,
+                        half,
+                        x,
+                        y,
+                        9,
+                        9
+                );
+            }
+        }
+
+        int absorptionHearts =
+                (int) Math.ceil(absorption / 2.0F);
+
+        for (int i = 0; i < absorptionHearts; i++) {
+
+            int x = 10 + (i % 10) * 8;
+            int y = 20 + (i / 10) * 10;
+
+            float heartAbsorption =
+                    absorption - (i * 2.0F);
+
+            Identifier container =
+                    Hud.HeartType.CONTAINER.getSprite(
+                            isHardcore,
+                            false,
+                            isBlink
+                    );
+
+            graphics.blitSprite(
+                    RenderPipelines.GUI_TEXTURED,
+                    container,
+                    x,
+                    y,
+                    9,
+                    9
+            );
+
+            if (heartAbsorption >= 2.0F) {
+
+                Identifier full =
+                        Hud.HeartType.ABSORBING.getSprite(
+                                isHardcore,
                                 false,
+                                isBlink
+                        );
+
+                graphics.blitSprite(
+                        RenderPipelines.GUI_TEXTURED,
+                        full,
+                        x,
+                        y,
+                        9,
+                        9
+                );
+
+            } else if (heartAbsorption > 0.0F) {
+
+                Identifier half =
+                        Hud.HeartType.ABSORBING.getSprite(
+                                isHardcore,
                                 true,
                                 isBlink
                         );
