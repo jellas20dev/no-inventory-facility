@@ -52,4 +52,13 @@ public class PlayerStatus {
 
         return Hud.HeartType.NORMAL;
     }
+    public static boolean isHardcore() {
+
+        return getMinecraft().level != null
+                && getMinecraft()
+                    .level
+                    .getLevelData()
+                    .isHardcore();
+    }
+
 }

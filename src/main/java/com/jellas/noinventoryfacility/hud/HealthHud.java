@@ -74,7 +74,7 @@ public class HealthHud {
 
                 Identifier full =
                         heartType.getSprite(
-                                false,
+                                PlayerStatus.isHardcore(),
                                 false,
                                 isBlink
                         );
