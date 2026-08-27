@@ -17,7 +17,7 @@ NIF replaces the traditional inventory and hotbar with a custom two-hand item sy
 
 ## Status
 
-**0.1.0-beta**
+**0.2.0-beta**
 
 NIF is in early public beta. The core systems are functional, but the HUD, animations and some vanilla interactions are still being refined.
 
