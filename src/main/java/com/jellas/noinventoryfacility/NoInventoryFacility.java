@@ -3,7 +3,10 @@ package com.jellas.noinventoryfacility;
 import com.jellas.noinventoryfacility.network.NetworkHandler;
 import com.jellas.noinventoryfacility.workbench.WorkbenchBlock;
 import com.jellas.noinventoryfacility.workbench.WorkbenchBlockEntity;
+import com.jellas.noinventoryfacility.workbench.VillageWorkbenchProcessor;
 import com.jellas.noinventoryfacility.workbench.WorkbenchMenu;
+import com.mojang.serialization.MapCodec;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessor;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.flag.FeatureFlags;
@@ -101,12 +104,20 @@ public class NoInventoryFacility {
                     () -> new MenuType<>(WorkbenchMenu::new, FeatureFlags.VANILLA_SET)
             );
 
+    public static final DeferredRegister<MapCodec<? extends StructureProcessor>> STRUCTURE_PROCESSORS =
+            DeferredRegister.create(Registries.STRUCTURE_PROCESSOR, MODID);
+
+    static {
+        STRUCTURE_PROCESSORS.register("village_workbench", () -> VillageWorkbenchProcessor.CODEC);
+    }
+
     public NoInventoryFacility(IEventBus modEventBus) {
         BLOCKS.register(modEventBus);
         ITEMS.register(modEventBus);
         BLOCK_ENTITIES.register(modEventBus);
         CREATIVE_MODE_TABS.register(modEventBus);
         MENUS.register(modEventBus);
+        STRUCTURE_PROCESSORS.register(modEventBus);
 
         modEventBus.register(NetworkHandler.class);
         modEventBus.addListener(NoInventoryFacility::addCreativeTabItems);
@@ -114,6 +125,7 @@ public class NoInventoryFacility {
         // Common (client + server) only. Client-only systems are registered
         // in NoInventoryFacilityClient, otherwise a dedicated server crashes.
         NeoForge.EVENT_BUS.register(InventorySystem.class);
+        NeoForge.EVENT_BUS.register(VillageSpawnSystem.class);
     }
 
     private static void addCreativeTabItems(BuildCreativeModeTabContentsEvent event) {
