@@ -3,8 +3,11 @@ package com.jellas.noinventoryfacility;
 import com.jellas.noinventoryfacility.network.NetworkHandler;
 import com.jellas.noinventoryfacility.workbench.WorkbenchBlock;
 import com.jellas.noinventoryfacility.workbench.WorkbenchBlockEntity;
+import com.jellas.noinventoryfacility.workbench.WorkbenchMenu;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.flag.FeatureFlags;
+import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.CreativeModeTabs;
@@ -89,11 +92,21 @@ public class NoInventoryFacility {
                     )
             );
 
+    public static final DeferredRegister<MenuType<?>> MENUS =
+            DeferredRegister.create(Registries.MENU, MODID);
+
+    public static final DeferredHolder<MenuType<?>, MenuType<WorkbenchMenu>> WORKBENCH_MENU =
+            MENUS.register(
+                    "workbench",
+                    () -> new MenuType<>(WorkbenchMenu::new, FeatureFlags.VANILLA_SET)
+            );
+
     public NoInventoryFacility(IEventBus modEventBus) {
         BLOCKS.register(modEventBus);
         ITEMS.register(modEventBus);
         BLOCK_ENTITIES.register(modEventBus);
         CREATIVE_MODE_TABS.register(modEventBus);
+        MENUS.register(modEventBus);
 
         modEventBus.register(NetworkHandler.class);
         modEventBus.addListener(NoInventoryFacility::addCreativeTabItems);

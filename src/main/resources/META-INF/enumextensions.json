@@ -1,0 +1,13 @@
+{
+  "entries": [
+    {
+      "enum": "net/minecraft/client/model/HumanoidModel$ArmPose",
+      "name": "NOINVENTORYFACILITY_CARRY",
+      "constructor": "(ZZLnet/neoforged/neoforge/client/IArmPoseTransformer;)V",
+      "parameters": {
+        "class": "com/jellas/noinventoryfacility/hud/CarryPose",
+        "field": "PROXY"
+      }
+    }
+  ]
+}

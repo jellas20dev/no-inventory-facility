@@ -1,0 +1,24 @@
+{
+  "values": [
+    "minecraft:crafting_table",
+    "minecraft:cartography_table",
+    "minecraft:fletching_table",
+    "minecraft:smithing_table",
+    "minecraft:loom",
+    "minecraft:composter",
+    "minecraft:target",
+    "minecraft:tnt",
+    "minecraft:note_block",
+    "minecraft:jukebox",
+    "minecraft:dispenser",
+    "minecraft:dropper",
+    "minecraft:observer",
+    "minecraft:piston",
+    "minecraft:sticky_piston",
+    "minecraft:redstone_lamp",
+    "minecraft:beehive",
+    "minecraft:bee_nest",
+    "minecraft:respawn_anchor",
+    "minecraft:lodestone"
+  ]
+}

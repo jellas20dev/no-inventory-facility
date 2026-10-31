@@ -3,6 +3,13 @@ package com.jellas.noinventoryfacility.workbench;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.SimpleMenuProvider;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.ContainerLevelAccess;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
@@ -34,6 +41,9 @@ public class WorkbenchBlock extends HorizontalDirectionalBlock implements Entity
                     Block.box(-6.5, 0, 0, 22.5, 15.1, 14.3),
                     Block.box(-6.5, 0, 14.3, 22.5, 31, 16)
             ));
+
+    private static final Component TITLE =
+            Component.translatable("container.noinventoryfacility.workbench");
 
     private final Function<BlockState, VoxelShape> shapes;
 
@@ -78,6 +88,31 @@ public class WorkbenchBlock extends HorizontalDirectionalBlock implements Entity
             CollisionContext context
     ) {
         return this.shapes.apply(state);
+    }
+
+    @Override
+    protected InteractionResult useWithoutItem(
+            BlockState state,
+            Level level,
+            BlockPos pos,
+            Player player,
+            BlockHitResult hitResult
+    ) {
+        if (!level.isClientSide()
+                && level.getBlockEntity(pos) instanceof WorkbenchBlockEntity workbench) {
+
+            player.openMenu(new SimpleMenuProvider(
+                    (containerId, inventory, p) -> new WorkbenchMenu(
+                            containerId,
+                            inventory,
+                            workbench.getGrid(),
+                            ContainerLevelAccess.create(level, pos)
+                    ),
+                    TITLE
+            ));
+        }
+
+        return InteractionResult.SUCCESS;
     }
 
     @Override

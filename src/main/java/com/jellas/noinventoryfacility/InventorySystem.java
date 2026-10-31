@@ -68,6 +68,10 @@ public class InventorySystem {
 
     public static boolean canPickup(Player player, ItemStack stack) {
 
+        if (canAddToTower(player, stack)) {
+            return true;
+        }
+
         boolean twoHanded =
                 ItemClassificationSystem.isTwoHanded(stack);
 
@@ -92,6 +96,21 @@ public class InventorySystem {
         }
 
         return mainHand.isEmpty() || offHand.isEmpty();
+    }
+
+    /**
+     * The main hand already carries a tower of the same building block,
+     * with room for one more (arms full, so the off hand is empty).
+     */
+    private static boolean canAddToTower(Player player, ItemStack stack) {
+
+        ItemStack mainHand = player.getInventory().getItem(MAIN_HAND_SLOT);
+
+        return !mainHand.isEmpty()
+                && player.getOffhandItem().isEmpty()
+                && ItemClassificationSystem.isStackable(mainHand)
+                && ItemStack.isSameItemSameComponents(mainHand, stack)
+                && mainHand.getCount() < ItemClassificationSystem.maxInHand(mainHand);
     }
 
     public static void pickupItem(
@@ -121,7 +140,13 @@ public class InventorySystem {
         ItemStack remaining = stack.copy();
         ItemStack pickedUp = remaining.split(1);
 
-        if (twoHanded
+        if (canAddToTower(player, stack)) {
+
+            ItemStack tower = player.getInventory().getItem(MAIN_HAND_SLOT).copy();
+            tower.grow(1);
+            player.getInventory().setItem(MAIN_HAND_SLOT, tower);
+
+        } else if (twoHanded
                 || player.getInventory().getItem(MAIN_HAND_SLOT).isEmpty()) {
 
             player.getInventory().setItem(MAIN_HAND_SLOT, pickedUp);

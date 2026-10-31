@@ -1,6 +1,8 @@
 {
   "itemGroup.noinventoryfacility": "Example Mod Tab",
   "block.noinventoryfacility.workbench": "Workbench",
+  "container.noinventoryfacility.workbench": "Workbench",
+  "container.noinventoryfacility.hands": "Hands",
   "item.noinventoryfacility.example_item": "Example Item",
 
   "noinventoryfacility.configuration.title": "No Inventory Facility Configs",

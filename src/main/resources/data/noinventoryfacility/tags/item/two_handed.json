@@ -1,0 +1,32 @@
+{
+  "values": [
+    "#minecraft:doors",
+    "#minecraft:trapdoors",
+    "#minecraft:slabs",
+    "#minecraft:fences",
+    "#minecraft:fence_gates",
+    "#minecraft:walls",
+    "#minecraft:wooden_pressure_plates",
+    "minecraft:stone_pressure_plate",
+    "minecraft:polished_blackstone_pressure_plate",
+    "minecraft:light_weighted_pressure_plate",
+    "minecraft:heavy_weighted_pressure_plate",
+    "#minecraft:beds",
+    "#minecraft:anvil",
+    "#minecraft:copper_chests",
+    "minecraft:enchanting_table",
+    "minecraft:stonecutter",
+    "minecraft:grindstone",
+    "minecraft:lectern",
+    "minecraft:brewing_stand",
+    "minecraft:cauldron",
+    "minecraft:bell",
+    "minecraft:chest",
+    "minecraft:trapped_chest",
+    "minecraft:ender_chest",
+    "minecraft:campfire",
+    "minecraft:soul_campfire",
+    "minecraft:decorated_pot",
+    "noinventoryfacility:workbench"
+  ]
+}
