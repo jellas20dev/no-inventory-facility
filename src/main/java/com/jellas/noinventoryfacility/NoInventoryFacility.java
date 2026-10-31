@@ -7,12 +7,17 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
+import net.minecraft.world.level.material.MapColor;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -47,6 +52,16 @@ public class NoInventoryFacility {
                     registryName -> new WorkbenchBlock(
                             BlockBehaviour.Properties.of()
                                     .setId(ResourceKey.create(Registries.BLOCK, registryName))
+                                    .mapColor(MapColor.WOOD)
+                                    .instrument(NoteBlockInstrument.BASS)
+                                    .strength(2.5F)
+                                    .sound(SoundType.WOOD)
+                                    .ignitedByLava()
+                                    // Lantern and candle on the bench.
+                                    .lightLevel(state -> 14)
+                                    // Not a full cube: don't cull neighbour
+                                    // faces or darken the model.
+                                    .noOcclusion()
                     )
             );
 
@@ -57,6 +72,8 @@ public class NoInventoryFacility {
                             WORKBENCH.get(),
                             new Item.Properties()
                                     .setId(ResourceKey.create(Registries.ITEM, registryName))
+                                    // Name comes from block.noinventoryfacility.workbench
+                                    .useBlockDescriptionPrefix()
                     )
             );
 
@@ -79,9 +96,16 @@ public class NoInventoryFacility {
         CREATIVE_MODE_TABS.register(modEventBus);
 
         modEventBus.register(NetworkHandler.class);
+        modEventBus.addListener(NoInventoryFacility::addCreativeTabItems);
 
         // Common (client + server) only. Client-only systems are registered
         // in NoInventoryFacilityClient, otherwise a dedicated server crashes.
         NeoForge.EVENT_BUS.register(InventorySystem.class);
+    }
+
+    private static void addCreativeTabItems(BuildCreativeModeTabContentsEvent event) {
+        if (event.getTabKey() == CreativeModeTabs.FUNCTIONAL_BLOCKS) {
+            event.accept(WORKBENCH_ITEM);
+        }
     }
 }
