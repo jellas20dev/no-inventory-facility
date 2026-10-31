@@ -1,97 +1,106 @@
 package com.jellas.noinventoryfacility;
 
+import net.minecraft.network.protocol.game.ClientboundSetHeldSlotPacket;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.TriState;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.neoforge.client.event.InputEvent;
 import net.neoforged.neoforge.event.entity.player.ItemEntityPickupEvent;
+import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 
+/**
+ * Common (client + dedicated server) inventory rules.
+ * Must not reference any client-only class.
+ */
 public class InventorySystem {
 
-    @SubscribeEvent
-    public static void onHotbarScroll(InputEvent.MouseScrollingEvent event) {
-
-        Player player = PlayerStatus.getPlayer();
-
-        if (player == null) {
-            return;
-        }
-
-        if (player.isCreative()) {
-            return;
-        }
-
-        event.setCanceled(true);
-    }
-
-    @SubscribeEvent
-    public static void onKeyInput(InputEvent.Key event) {
-
-        Player player = PlayerStatus.getPlayer();
-
-        if (player == null) {
-            return;
-        }
-
-        if (player.isCreative()) {
-            return;
-        }
-
-        int selected = player.getInventory().getSelectedSlot();
-
-        if (selected > 0) {
-            player.getInventory().setSelectedSlot(0);
-        }
-    }
+    public static final int MAIN_HAND_SLOT = 0;
 
     @SubscribeEvent
     public static void onItemPickup(ItemEntityPickupEvent.Pre event) {
         event.setCanPickup(TriState.FALSE);
     }
 
+    /**
+     * Server-side enforcement: the only usable inventory slot is slot 0
+     * (main hand). Anything that ends up in slots 1..35 — through chests,
+     * furnaces, crafting results, commands, etc. — is dropped at the
+     * player's feet.
+     */
+    @SubscribeEvent
+    public static void onPlayerTick(PlayerTickEvent.Post event) {
+
+        if (!(event.getEntity() instanceof ServerPlayer player)) {
+            return;
+        }
+
+        if (player.isCreative() || player.isSpectator()) {
+            return;
+        }
+
+        Inventory inventory = player.getInventory();
+
+        // A modified or lagging client could still select another hotbar
+        // slot; force it back and tell the client.
+        if (inventory.getSelectedSlot() != MAIN_HAND_SLOT) {
+            inventory.setSelectedSlot(MAIN_HAND_SLOT);
+            player.connection.send(
+                    new ClientboundSetHeldSlotPacket(MAIN_HAND_SLOT)
+            );
+        }
+
+        for (int slot = MAIN_HAND_SLOT + 1; slot < Inventory.INVENTORY_SIZE; slot++) {
+
+            ItemStack stack = inventory.getItem(slot);
+
+            if (stack.isEmpty()) {
+                continue;
+            }
+
+            inventory.setItem(slot, ItemStack.EMPTY);
+            player.drop(stack, false, false);
+        }
+    }
+
     public static boolean canPickup(Player player, ItemStack stack) {
 
         boolean twoHanded =
-                ItemClassificationSystem.isTwoHanded(
-                        stack,
-                        player.level()
-                );
+                ItemClassificationSystem.isTwoHanded(stack);
 
-        boolean mainEmpty =
-                player.getInventory().getItem(0).isEmpty();
+        ItemStack mainHand =
+                player.getInventory().getItem(MAIN_HAND_SLOT);
 
-        boolean offhandEmpty =
-                player.getOffhandItem().isEmpty();
+        ItemStack offHand =
+                player.getOffhandItem();
 
         boolean mainIsTwoHanded =
-                ItemClassificationSystem.isTwoHanded(
-                        player.getInventory().getItem(0),
-                        player.level()
-                );
+                ItemClassificationSystem.isTwoHanded(mainHand);
 
         boolean offhandIsTwoHanded =
-                ItemClassificationSystem.isTwoHanded(
-                        player.getOffhandItem(),
-                        player.level()
-                );
+                ItemClassificationSystem.isTwoHanded(offHand);
 
         if (mainIsTwoHanded || offhandIsTwoHanded) {
             return false;
         }
 
         if (twoHanded) {
-            return mainEmpty && offhandEmpty;
+            return mainHand.isEmpty() && offHand.isEmpty();
         }
 
-        return mainEmpty || offhandEmpty;
+        return mainHand.isEmpty() || offHand.isEmpty();
     }
 
     public static void pickupItem(
             Player player,
             ItemEntity itemEntity) {
+
+        if (!itemEntity.isAlive() || itemEntity.hasPickUpDelay()) {
+            return;
+        }
 
         ItemStack stack = itemEntity.getItem();
 
@@ -99,25 +108,23 @@ public class InventorySystem {
             return;
         }
 
-        boolean twoHanded =
-                ItemClassificationSystem.isTwoHanded(
-                        stack,
-                        player.level()
-                );
-
         if (!canPickup(player, stack)) {
             return;
         }
 
-        ItemStack pickedUp = stack.split(1);
+        boolean twoHanded =
+                ItemClassificationSystem.isTwoHanded(stack);
 
-        if (twoHanded) {
+        // Work on a copy: mutating the entity's stack in place does not mark
+        // the synched entity data dirty, so clients would keep showing the
+        // old count. setItem() with a new instance forces the sync.
+        ItemStack remaining = stack.copy();
+        ItemStack pickedUp = remaining.split(1);
 
-            player.getInventory().setItem(0, pickedUp);
+        if (twoHanded
+                || player.getInventory().getItem(MAIN_HAND_SLOT).isEmpty()) {
 
-        } else if (player.getInventory().getItem(0).isEmpty()) {
-
-            player.getInventory().setItem(0, pickedUp);
+            player.getInventory().setItem(MAIN_HAND_SLOT, pickedUp);
 
         } else {
 
@@ -127,11 +134,10 @@ public class InventorySystem {
             );
         }
 
-        if (stack.isEmpty()) {
+        if (remaining.isEmpty()) {
             itemEntity.discard();
+        } else {
+            itemEntity.setItem(remaining);
         }
-    }
-
-    public static void init() {
     }
 }

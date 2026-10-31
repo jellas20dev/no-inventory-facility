@@ -25,13 +25,18 @@ public class ExperienceHud {
         int screenWidth =
                 graphics.guiWidth();
 
+        int screenHeight =
+                graphics.guiHeight();
+
         int barWidth = 182;
         int barHeight = 5;
 
         int x =
                 (screenWidth - barWidth) / 2;
 
-        int y = 10;
+        // Bottom of the screen: the top center belongs to boss bars, and the
+        // hand items (y = height - 40 .. height - 24) stay clear above it.
+        int y = screenHeight - 10;
 
         graphics.blitSprite(
                 RenderPipelines.GUI_TEXTURED,
@@ -80,7 +85,7 @@ public class ExperienceHud {
                     PlayerStatus.getMinecraft().font,
                     level,
                     (screenWidth - textWidth) / 2,
-                    y + barHeight + 2,
+                    y - 6,
                     0xFFFFFF00,
                     true
             );

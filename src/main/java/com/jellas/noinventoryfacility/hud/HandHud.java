@@ -16,17 +16,11 @@ public class HandHud {
     ) {
         boolean mainTwoHanded =
                 !mainHand.isEmpty()
-                        && ItemClassificationSystem.isTwoHanded(
-                        mainHand,
-                        player.level()
-                );
+                        && ItemClassificationSystem.isTwoHanded(mainHand);
 
         boolean offTwoHanded =
                 !offHand.isEmpty()
-                        && ItemClassificationSystem.isTwoHanded(
-                        offHand,
-                        player.level()
-                );
+                        && ItemClassificationSystem.isTwoHanded(offHand);
 
         if (mainTwoHanded || offTwoHanded) {
 

@@ -7,10 +7,18 @@ import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Player;
 
+import java.lang.ref.WeakReference;
+
 public class HealthHud {
+
+    private static final int HEARTS_PER_ROW = 10;
+    private static final int ROW_HEIGHT = 10;
 
     private static float lastHealth = -1.0f;
     private static int healthBlinkTime = 0;
+
+    /** Reset the blink state when the player instance changes (new world, respawn). */
+    private static WeakReference<Player> lastPlayer = new WeakReference<>(null);
 
     public static void renderHealth(
             GuiGraphicsExtractor graphics,
@@ -29,6 +37,12 @@ public class HealthHud {
 
         boolean isHardcore =
                 PlayerStatus.isHardcore();
+
+        if (lastPlayer.get() != player) {
+            lastPlayer = new WeakReference<>(player);
+            lastHealth = -1.0f;
+            healthBlinkTime = 0;
+        }
 
         if (lastHealth < 0.0f) {
             lastHealth = health;
@@ -53,8 +67,8 @@ public class HealthHud {
 
         for (int i = 0; i < totalHearts; i++) {
 
-            int x = 10 + i * 8;
-            int y = 10;
+            int x = 10 + (i % HEARTS_PER_ROW) * 8;
+            int y = 10 + (i / HEARTS_PER_ROW) * ROW_HEIGHT;
 
             Identifier container =
                     Hud.HeartType.CONTAINER.getSprite(
@@ -113,13 +127,17 @@ public class HealthHud {
             }
         }
 
+        // Absorption starts on the row after the last health row.
+        int healthRows =
+                Math.max(1, (totalHearts + HEARTS_PER_ROW - 1) / HEARTS_PER_ROW);
+
         int absorptionHearts =
                 (int) Math.ceil(absorption / 2.0F);
 
         for (int i = 0; i < absorptionHearts; i++) {
 
-            int x = 10 + (i % 10) * 8;
-            int y = 20 + (i / 10) * 10;
+            int x = 10 + (i % HEARTS_PER_ROW) * 8;
+            int y = 10 + (healthRows + i / HEARTS_PER_ROW) * ROW_HEIGHT;
 
             float heartAbsorption =
                     absorption - (i * 2.0F);

@@ -49,7 +49,13 @@ public class NetworkHandler {
                 return;
             }
 
-            if (player.distanceToSqr(itemEntity) > 25.0) {
+            // Same reach the client raycast uses (eye to item box), plus a
+            // small buffer for movement between client and server.
+            double maxRange = player.blockInteractionRange() + 1.0;
+
+            if (itemEntity.getBoundingBox()
+                    .distanceToSqr(player.getEyePosition())
+                    > maxRange * maxRange) {
                 return;
             }
 

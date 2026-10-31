@@ -114,6 +114,10 @@ public class HudSystem {
 
             event.setCanceled(true);
 
+            if (player.isCreative() || player.isSpectator()) {
+                return;
+            }
+
             GuiGraphicsExtractor graphics =
                     event.getGuiGraphics();
 

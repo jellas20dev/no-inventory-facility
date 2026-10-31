@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "noinventoryfacility:workbench_block/workbench"
+    }
+  }
+}
